@@ -19,7 +19,7 @@
   "license": "MIT",
   "type": "module",
   "bin": { "vortr-mcp": "dist/index.js" },
-  "files": ["dist", "llms.txt", "SKILL.md"],
+  "files": ["dist", "llms.txt", "SKILL.md", "README.md"],
   "publishConfig": { "access": "public" },
   "engines": { "node": ">=18" },
   "scripts": {

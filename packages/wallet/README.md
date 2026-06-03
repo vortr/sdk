@@ -46,9 +46,8 @@ Put the key in `env`, **never** in chat.
 
 ```yaml
 mcp_servers:
-  vortr:                       # remote, keyless: search/quote/build
-    command: "npx"
-    args: ["-y", "mcp-remote", "https://www.vortr.xyz/mcp"]
+  vortr:                       # remote, keyless: search/quote/build (Hermes speaks HTTP MCP — add by URL)
+    url: "https://www.vortr.xyz/mcp"
   vortr-wallet:                # LOCAL, holds your key
     command: "npx"
     args: ["-y", "@vortr/wallet"]
