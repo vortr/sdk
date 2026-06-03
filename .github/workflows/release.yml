@@ -1,0 +1,41 @@
+name: release
+
+# Publishes @vortr/wallet + @vortr/mcp to npm WITH provenance (Sigstore).
+# Trigger: push a tag like `v0.1.4`. The published tarballs are cryptographically
+# linked to this repo + commit + this workflow run.
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: read
+  id-token: write # required for npm provenance (OIDC)
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9.12.0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          registry-url: "https://registry.npmjs.org"
+
+      - run: pnpm install --frozen-lockfile
+
+      - run: pnpm -r build
+
+      - run: pnpm -r test
+
+      # --provenance needs npm >= 9.5 (Node 20 ships it) + id-token: write above.
+      - name: Publish with provenance
+        run: pnpm --filter @vortr/wallet --filter @vortr/mcp publish --provenance --access public --no-git-checks
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_CONFIG_PROVENANCE: "true"
