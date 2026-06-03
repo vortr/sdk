@@ -1,7 +1,13 @@
 # Vortr SDK
 
+[![ci](https://github.com/vortr/sdk/actions/workflows/ci.yml/badge.svg)](https://github.com/vortr/sdk/actions/workflows/ci.yml)
+[![@vortr/wallet](https://img.shields.io/npm/v/@vortr/wallet?label=%40vortr%2Fwallet)](https://www.npmjs.com/package/@vortr/wallet)
+[![@vortr/mcp](https://img.shields.io/npm/v/@vortr/mcp?label=%40vortr%2Fmcp)](https://www.npmjs.com/package/@vortr/mcp)
+[![license](https://img.shields.io/npm/l/@vortr/wallet)](LICENSE)
+
 Open-source packages behind [Vortr](https://vortr.xyz) — non-custodial DeFi swaps
-on **Base** for AI agents and developers. Vortr never holds your keys.
+on **Base** for AI agents and developers. Vortr never holds your keys. Published
+to npm with [provenance](https://docs.npmjs.com/generating-provenance-statements).
 
 ## Packages
 
