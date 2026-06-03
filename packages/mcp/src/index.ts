@@ -3,7 +3,7 @@ import { fileURLToPath } from 'node:url';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import { createServer } from './server.js';
 
-const VERSION = '0.1.3';
+const VERSION = '0.1.4';
 
 const ART = [
   '  ██╗   ██╗ ██████╗ ██████╗ ████████╗██████╗',
