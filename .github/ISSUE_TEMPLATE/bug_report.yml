@@ -1,0 +1,33 @@
+name: Bug report
+description: Something in @vortr/wallet or @vortr/mcp isn't working
+labels: [bug]
+body:
+  - type: input
+    id: package
+    attributes:
+      label: Package + version
+      placeholder: "@vortr/wallet@0.1.4"
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: What did you do, what did you expect, what happened instead?
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: Reproduction
+      description: The tool call / config / command that triggers it. Redact any keys.
+    validations:
+      required: true
+  - type: input
+    id: env
+    attributes:
+      label: Environment
+      placeholder: "Node 20, MCP host (Hermes / Claude Code / …), OS"
+  - type: markdown
+    attributes:
+      value: "⚠️ Never paste a private key or token. Security issues → SECURITY.md, not here."
