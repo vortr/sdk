@@ -9,6 +9,12 @@ updates:
     groups:
       all:
         patterns: ["*"]
+    # Major upgrades are breaking for a published SDK — take them as deliberate,
+    # tested migrations rather than bundled auto-PRs (e.g. zod 3→4 + ts 5→6 +
+    # vitest 2→4 grouped together fail CI). Minor + patch, incl. security, still flow.
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
   - package-ecosystem: github-actions
     directory: /
     schedule:
