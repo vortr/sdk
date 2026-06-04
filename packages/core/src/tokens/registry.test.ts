@@ -26,4 +26,10 @@ describe('token registry', () => {
   it('every registry entry is on Base (chainId 8453)', () => {
     expect(BASE_TOKENS.every((t) => t.chainId === 8453)).toBe(true);
   });
+
+  it('resolves the added blue-chips (cbETH / USDe / AERO) by symbol + canonical address', () => {
+    expect(searchTokens('cbeth').map((t) => t.symbol)).toContain('cbETH');
+    expect(getToken('0x5d3a1Ff2b6BAb83b63cd9AD0787074081a52ef34')?.symbol).toBe('USDe');
+    expect(getToken('0x940181a94A35A4569E4529A3CDfB74e38FD98631')?.symbol).toBe('AERO');
+  });
 });

@@ -9,6 +9,10 @@ export const BASE_TOKENS: TokenInfo[] = [
   { chainId: BASE_CHAIN_ID, address: '0xfde4C96c8593536E31F229EA8f37b2ADa2699bb2', symbol: 'USDT', name: 'Tether USD', decimals: 6 },
   { chainId: BASE_CHAIN_ID, address: '0x50c5725949A6F0c72E6C4a641F24049A917DB0Cb', symbol: 'DAI', name: 'Dai Stablecoin', decimals: 18 },
   { chainId: BASE_CHAIN_ID, address: '0xcbB7C0000aB88B473b1f5aFd9ef808440eed33Bf', symbol: 'cbBTC', name: 'Coinbase Wrapped BTC', decimals: 8 },
+  // Verified 2026-06-04 — CoinGecko canonical Base address + on-chain symbol/decimals match.
+  { chainId: BASE_CHAIN_ID, address: '0x2Ae3F1Ec7F1F5012CFEab0185bfc7aa3cf0DEc22', symbol: 'cbETH', name: 'Coinbase Wrapped Staked ETH', decimals: 18 },
+  { chainId: BASE_CHAIN_ID, address: '0x5d3a1Ff2b6BAb83b63cd9AD0787074081a52ef34', symbol: 'USDe', name: 'Ethena USDe', decimals: 18 },
+  { chainId: BASE_CHAIN_ID, address: '0x940181a94A35A4569E4529A3CDfB74e38FD98631', symbol: 'AERO', name: 'Aerodrome', decimals: 18 },
 ];
 
 const BY_ADDRESS = new Map<string, TokenInfo>(

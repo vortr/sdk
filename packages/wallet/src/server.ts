@@ -12,7 +12,7 @@ export function createServer(): McpServer {
     connector: createConnector({ apiBase: cfg.apiBase, site: cfg.site }),
     pending: new PendingStore(),
   };
-  const server = new McpServer({ name: 'vortr-wallet', version: '0.1.6' });
+  const server = new McpServer({ name: 'vortr-wallet', version: '0.1.7' });
   registerWalletTools(server, deps);
   return server;
 }

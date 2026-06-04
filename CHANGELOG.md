@@ -9,6 +9,10 @@ versions are [SemVer](https://semver.org/). From `@vortr/wallet@0.1.4` /
 
 ## @vortr/wallet
 
+### 0.1.7
+- Added Base tokens to the registry: **cbETH**, **USDe**, **AERO** (CoinGecko
+  canonical address + on-chain symbol/decimals verified). 9 tokens total.
+
 ### 0.1.6
 - Maintenance release — republished from CI. No API or behaviour change.
 
@@ -41,6 +45,10 @@ versions are [SemVer](https://semver.org/). From `@vortr/wallet@0.1.4` /
   locally, per-swap confirm. The hosted Vortr never holds the key.
 
 ## @vortr/mcp
+
+### 0.1.6
+- Added Base tokens: **cbETH**, **USDe**, **AERO** (CoinGecko + on-chain verified).
+  9 tokens total.
 
 ### 0.1.5
 - Maintenance release — republished from CI. No API or behaviour change.

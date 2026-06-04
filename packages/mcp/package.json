@@ -1,6 +1,6 @@
 {
   "name": "@vortr/mcp",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "Vortr MCP — non-custodial DeFi swap tools on Base for AI agents (search tokens, 0x quotes, ERC-5792 approve+swap calldata). The user signs in their own wallet (sign_url) or runs the @vortr/wallet local signer for autonomous execution; Vortr never signs.",
   "keywords": [
     "mcp",
