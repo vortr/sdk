@@ -7,7 +7,7 @@ import { searchTokensSchema, quoteSchema, portfolioSchema, READ_ONLY, PREPARE } 
 export function createServer(): McpServer {
   const config = readConfig();
   const deps: ToolDeps = { client: new ApiClient(config) };
-  const server = new McpServer({ name: 'vortr', version: '0.1.4' });
+  const server = new McpServer({ name: 'vortr', version: '0.1.5' });
 
   server.registerTool('search_tokens',
     { description: 'Search Vortr Base token registry by symbol, name, or address.', inputSchema: searchTokensSchema, annotations: READ_ONLY },

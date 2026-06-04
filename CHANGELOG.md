@@ -9,6 +9,9 @@ versions are [SemVer](https://semver.org/). From `@vortr/wallet@0.1.4` /
 
 ## @vortr/wallet
 
+### 0.1.6
+- Maintenance release — republished from CI. No API or behaviour change.
+
 ### 0.1.5
 - docs: Hermes connects to the connector by URL (HTTP MCP); dropped the stale
   `mcp-remote` bridge example. No runtime change.
@@ -38,6 +41,9 @@ versions are [SemVer](https://semver.org/). From `@vortr/wallet@0.1.4` /
   locally, per-swap confirm. The hosted Vortr never holds the key.
 
 ## @vortr/mcp
+
+### 0.1.5
+- Maintenance release — republished from CI. No API or behaviour change.
 
 ### 0.1.4
 - docs: add a package README (the npm landing page was blank).
