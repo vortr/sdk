@@ -3,11 +3,12 @@ import { readConfig } from './config.js';
 import { ApiClient } from './apiClient.js';
 import { searchTokensHandler, getQuoteHandler, buildSwapHandler, getPortfolioHandler, type ToolDeps } from './tools/handlers.js';
 import { searchTokensSchema, quoteSchema, portfolioSchema, READ_ONLY, PREPARE } from './tools/definitions.js';
+import { VERSION } from './version.js';
 
 export function createServer(): McpServer {
   const config = readConfig();
   const deps: ToolDeps = { client: new ApiClient(config) };
-  const server = new McpServer({ name: 'vortr', version: '0.1.7' });
+  const server = new McpServer({ name: 'vortr', version: VERSION });
 
   server.registerTool('search_tokens',
     { description: 'Search Vortr Base token registry by symbol, name, or address.', inputSchema: searchTokensSchema, annotations: READ_ONLY },

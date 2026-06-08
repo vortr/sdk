@@ -4,8 +4,7 @@ import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js'
 import { privateKeyToAccount } from 'viem/accounts';
 import { readConfig } from './config.js';
 import { createServer } from './server.js';
-
-const VERSION = '0.1.8';
+import { VERSION } from './version.js';
 
 const ART = [
   '  ██╗   ██╗ ██████╗ ██████╗ ████████╗██████╗',
