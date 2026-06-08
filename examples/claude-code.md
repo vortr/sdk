@@ -11,14 +11,15 @@ summary, approve, and the agent calls `execute_swap`.
 
 ## Keyless — connector (`@vortr/mcp`)
 
-Sign in your own wallet via the `sign_url` that `build_swap` returns:
+Your agent signs + sends the ERC-5792 payload that `build_swap` returns with its
+own wallet (or run `@vortr/wallet` for autonomous signing):
 
 ```bash
-claude mcp add --transport http vortr https://www.vortr.xyz/mcp
+claude mcp add --transport http vortr https://www.vortragents.com/mcp
 ```
 
 No key, no install, no secret — `search_tokens` / `get_quote` / `build_swap`,
-and you open `sign_url` to confirm.
+and your agent signs + sends the payload itself.
 
 ## Tools
 

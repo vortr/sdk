@@ -1,13 +1,13 @@
 # @vortr/wallet
 
-Local non-custodial **signer** MCP for [Vortr](https://vortr.xyz). It auto-fills
+Local non-custodial **signer** MCP for [Vortr](https://vortragents.com). It auto-fills
 your wallet address, fetches keyless calldata from the public Vortr connector,
 and signs + broadcasts Base swaps after a per-swap confirmation. **The hosted
 Vortr never holds your key** — it lives only in this local process.
 
 ## Why
 
-The remote connector (`https://www.vortr.xyz/mcp`) is keyless: `build_swap`
+The remote connector (`https://www.vortragents.com/mcp`) is keyless: `build_swap`
 returns calldata you sign yourself. `@vortr/wallet` is the local piece that does
 that signing for an agent — no pasting an address, no opening a browser.
 
@@ -47,7 +47,7 @@ Put the key in `env`, **never** in chat.
 ```yaml
 mcp_servers:
   vortr:                       # remote, keyless: search/quote/build (Hermes speaks HTTP MCP — add by URL)
-    url: "https://www.vortr.xyz/mcp"
+    url: "https://www.vortragents.com/mcp"
   vortr-wallet:                # LOCAL, holds your key
     command: "npx"
     args: ["-y", "@vortr/wallet"]
@@ -60,7 +60,7 @@ mcp_servers:
 | Env | Default | Purpose |
 |-----|---------|---------|
 | `VORTR_SIGNER_KEY` | — (required) | EOA private key. Local only. |
-| `VORTR_API_BASE` | `https://www.vortr.xyz/mcp` | Keyless connector to fetch calldata from. |
+| `VORTR_API_BASE` | `https://www.vortragents.com/mcp` | Keyless connector to fetch calldata from. |
 | `VORTR_BASE_RPC_URL` | `https://mainnet.base.org` | Base RPC for broadcast + receipts. |
 
 ## Flow

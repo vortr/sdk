@@ -15,19 +15,19 @@ describe('readConfig', () => {
   it('applies defaults and derives the REST site from the connector URL', () => {
     const cfg = readConfig({ VORTR_SIGNER_KEY: KEY });
     expect(cfg.signerKey).toBe(KEY);
-    expect(cfg.apiBase).toBe('https://www.vortr.xyz/mcp');
-    expect(cfg.site).toBe('https://www.vortr.xyz');
+    expect(cfg.apiBase).toBe('https://www.vortragents.com/mcp');
+    expect(cfg.site).toBe('https://www.vortragents.com');
     expect(cfg.rpcUrl).toBe('https://mainnet.base.org');
   });
 
   it('honors overrides and strips a trailing slash, deriving site from /mcp', () => {
     const cfg = readConfig({
       VORTR_SIGNER_KEY: KEY,
-      VORTR_API_BASE: 'https://staging.vortr.xyz/mcp/',
+      VORTR_API_BASE: 'https://staging.vortragents.com/mcp/',
       VORTR_BASE_RPC_URL: 'https://my.rpc',
     });
-    expect(cfg.apiBase).toBe('https://staging.vortr.xyz/mcp');
-    expect(cfg.site).toBe('https://staging.vortr.xyz');
+    expect(cfg.apiBase).toBe('https://staging.vortragents.com/mcp');
+    expect(cfg.site).toBe('https://staging.vortragents.com');
     expect(cfg.rpcUrl).toBe('https://my.rpc');
   });
 

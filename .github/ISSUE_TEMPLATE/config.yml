@@ -4,5 +4,5 @@ contact_links:
     url: https://github.com/vortr/sdk/security/advisories/new
     about: Report privately — do NOT open a public issue. See SECURITY.md.
   - name: Docs & usage
-    url: https://vortr.xyz/docs
+    url: https://vortragents.com/docs
     about: Integration guides for agents and humans.

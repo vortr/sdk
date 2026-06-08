@@ -5,14 +5,14 @@
 [![@vortr/mcp](https://img.shields.io/npm/v/@vortr/mcp?label=%40vortr%2Fmcp)](https://www.npmjs.com/package/@vortr/mcp)
 [![license](https://img.shields.io/npm/l/@vortr/wallet)](LICENSE)
 
-Open-source packages behind [Vortr](https://vortr.xyz) — non-custodial DeFi swaps
+Open-source packages behind [Vortr](https://vortragents.com) — non-custodial DeFi swaps
 on **Base** for AI agents and developers. Vortr never holds your keys. Published
 to npm with [provenance](https://docs.npmjs.com/generating-provenance-statements).
 
 ## Try it (no install, no key)
 
 ```bash
-node examples/quote.mjs WETH USDC 0.05    # live 0x quote + approve/swap calldata + a sign_url
+node examples/quote.mjs WETH USDC 0.05    # live 0x quote + approve/swap calldata (ERC-5792)
 ```
 
 A keyless live quote straight from the hosted connector — see [`examples/`](examples/)
@@ -23,7 +23,7 @@ for the script and the `@vortr/wallet` autonomous-signing example.
 | Package | npm | What it is |
 |---------|-----|------------|
 | **`@vortr/wallet`** | [`@vortr/wallet`](https://www.npmjs.com/package/@vortr/wallet) | Local **signer** MCP. Holds an EOA key in `VORTR_SIGNER_KEY` (env, never chat), fetches keyless calldata from the Vortr connector, and signs + broadcasts Base swaps after a per-swap confirm. Autonomous end-to-end swaps for an agent. |
-| **`@vortr/mcp`** | [`@vortr/mcp`](https://www.npmjs.com/package/@vortr/mcp) | Stdio **connector** MCP. Keyless swap tools (search tokens, 0x quotes, ERC-5792 approve+swap calldata). You sign in your own wallet via `sign_url`. |
+| **`@vortr/mcp`** | [`@vortr/mcp`](https://www.npmjs.com/package/@vortr/mcp) | Stdio **connector** MCP. Keyless swap tools (search tokens, 0x quotes, ERC-5792 approve+swap calldata). Your agent signs + sends the ERC-5792 payload with its own wallet (or run `@vortr/wallet` for autonomous signing). |
 | `@vortr/core` | (bundled) | Shared library — Base token registry, 0x Swap API v2 adapter, ERC-5792 call builder, market data. Bundled into the packages above; not published on its own. |
 
 ## Quick start — autonomous swaps
@@ -42,8 +42,8 @@ Then: *"swap $5 USDC to ETH"* → the agent calls `prepare_swap` → shows you t
 summary → on your **"yes"** → `execute_swap`. See
 [`packages/wallet/README.md`](packages/wallet/README.md).
 
-For the keyless / browser-signing path, use `@vortr/mcp` or the hosted connector at
-`https://www.vortr.xyz/mcp`.
+For the keyless path, use `@vortr/mcp` or the hosted connector at
+`https://www.vortragents.com/mcp`.
 
 ## Tools
 
@@ -53,7 +53,7 @@ For the keyless / browser-signing path, use `@vortr/mcp` or the hosted connector
 |------|--------------|
 | `search_tokens` | Resolve a symbol / name / address to a Base token (`TokenInfo[]`). |
 | `get_quote` | Live 0x quote — `buyAmount`, `minBuyAmount`, route, price impact. `amount` is BASE UNITS. |
-| `build_swap` | ERC-5792 `wallet_sendCalls` payload (approve + swap) + a `sign_url`. |
+| `build_swap` | ERC-5792 `wallet_sendCalls` payload (approve + swap). Your agent signs + sends it with its own wallet. |
 | `get_portfolio` | The Base token set for an address. |
 
 `@vortr/wallet` (local signer) adds the autonomous flow on top:

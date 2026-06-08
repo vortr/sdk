@@ -5,13 +5,14 @@
 //   node examples/quote.mjs WETH USDC 0.01
 //   node examples/quote.mjs USDC DEGEN 5 0xYourWallet
 //
-// Hits the public Streamable-HTTP MCP at https://www.vortr.xyz/mcp (stateless,
+// Hits the public Streamable-HTTP MCP at https://www.vortragents.com/mcp (stateless,
 // SSE-framed JSON-RPC) and calls search_tokens -> get_quote -> build_swap.
-// Vortr NEVER signs: build_swap returns the ERC-5792 calldata + a sign_url you
-// open in your own wallet (or run @vortr/wallet to sign locally). The taker is
-// just whose address the swap is built for — replace it with your own.
+// Vortr NEVER signs: build_swap returns the ERC-5792 calldata; your agent signs +
+// sends the payload with its own wallet (or run @vortr/wallet for autonomous
+// signing). The taker is just whose address the swap is built for — replace it
+// with your own.
 
-const MCP = 'https://www.vortr.xyz/mcp';
+const MCP = 'https://www.vortragents.com/mcp';
 
 /** Call one Vortr MCP tool and return its parsed result (throws on tool error). */
 async function callTool(name, args) {
@@ -55,10 +56,10 @@ async function main() {
   console.log(`  ≈ ${fmt(q.buyAmount, buy.decimals)} ${buy.symbol}   (min ${fmt(q.minBuyAmount, buy.decimals)} after slippage)`);
   console.log(`  route: ${q.route?.fills?.map((f) => f.source).join(' + ') || 'n/a'}`);
 
-  // 4) build the approve+swap payload + a sign_url — you sign it, Vortr never does
+  // 4) build the approve+swap payload — Vortr never signs; your agent signs + sends it
   const b = await callTool('build_swap', { sellToken: sell.address, buyToken: buy.address, amount, taker });
   console.log(`\n  build_swap -> ${b.payload?.calls?.length ?? 0} call(s) (approve + swap)`);
-  console.log(`  sign in your own wallet:\n  ${b.sign_url}\n`);
+  console.log(`  your agent signs + sends this ERC-5792 payload with its own wallet (or run @vortr/wallet for autonomous signing)\n`);
 }
 
 main().catch((e) => {

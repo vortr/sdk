@@ -1,16 +1,16 @@
 # Vortr MCP
 
-Agent-first DEX tools on Base (stdio). build_swap returns { payload, summary, sign_url } and
-never signs. Two paths to sign: open sign_url in your own wallet (default), or run
-@vortr/wallet alongside this server for autonomous execution.
-No-install alternative: add the remote connector URL https://www.vortr.xyz/mcp in Claude
+Agent-first DEX tools on Base (stdio). build_swap returns { payload, summary } and
+never signs. Your agent signs + sends the ERC-5792 payload with its own wallet (or run
+@vortr/wallet alongside this server for autonomous execution).
+No-install alternative: add the remote connector URL https://www.vortragents.com/mcp in Claude
 (web/desktop) — covers quote/build; this stdio package is for self-hosted deployments.
 
-## Recipe: swap on Base (sign_url path — default)
+## Recipe: swap on Base (your agent signs)
 1. vortr.search_tokens("USDC") / search_tokens("WETH")  -> Base token addresses.
 2. vortr.get_quote(sellToken, buyToken, amount[BASE UNITS], taker)  -> price, minBuyAmount, route.
-3. vortr.build_swap(...same...) -> { payload, summary, sign_url }. summary.taker, summary.expiresAt.
-4. Open sign_url, connect your wallet, confirm. If summary.expiresAt passed, call build_swap again first.
+3. vortr.build_swap(...same...) -> { payload, summary }. summary.taker, summary.expiresAt.
+4. Your agent signs + sends the ERC-5792 payload with its own wallet. If summary.expiresAt passed, call build_swap again first.
 
 ## Recipe: autonomous signing with @vortr/wallet (local key)
 Run @vortr/wallet alongside this server (key in VORTR_SIGNER_KEY env, never in chat):
@@ -30,13 +30,13 @@ Note: @vortr/wallet also exposes search_tokens + get_quote, so it can be the ONL
 Vortr is a standard stdio MCP server. Register vortr (quote/build) and optionally @vortr/wallet
 (autonomous signing):
 - Claude Code:
-  claude mcp add --scope user vortr -e VORTR_API_BASE=https://www.vortr.xyz -e VORTR_API_SECRET=<secret> -- npx -y @vortr/mcp
+  claude mcp add --scope user vortr -e VORTR_API_BASE=https://www.vortragents.com -e VORTR_API_SECRET=<secret> -- npx -y @vortr/mcp
   # Optional: autonomous signer
   claude mcp add --scope user wallet -e VORTR_SIGNER_KEY=<your-eoa-key> -- npx -y @vortr/wallet
 - Hermes Agent (NousResearch) -> ~/.hermes/config.yaml. Hermes does NOT inherit your shell env
   for stdio servers, so secrets MUST go in the env: block:
   mcp_servers:
-    vortr:  { command: "npx", args: ["-y","@vortr/mcp"], env: { VORTR_API_BASE: "https://www.vortr.xyz", VORTR_API_SECRET: "<secret>" } }
+    vortr:  { command: "npx", args: ["-y","@vortr/mcp"], env: { VORTR_API_BASE: "https://www.vortragents.com", VORTR_API_SECRET: "<secret>" } }
     wallet: { command: "npx", args: ["-y","@vortr/wallet"], env: { VORTR_SIGNER_KEY: "<your-eoa-key>" } }
 
 ## Notes

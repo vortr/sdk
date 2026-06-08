@@ -1,11 +1,11 @@
 ---
 name: vortr-swaps
-description: Non-custodial DeFi swaps on Base via the Vortr MCP (remote connector https://www.vortr.xyz/mcp — no secret) — search tokens, get 0x quotes, build ERC-5792 approve+swap calldata, then sign in your own wallet via the returned sign_url (default), or run the @vortr/wallet local signer for autonomous execution. Vortr never signs. Use when an agent needs to price or execute a token swap on Base.
+description: Non-custodial DeFi swaps on Base via the Vortr MCP (remote connector https://www.vortragents.com/mcp — no secret) — search tokens, get 0x quotes, build ERC-5792 approve+swap calldata, then your agent signs + sends the ERC-5792 payload with its own wallet (or run @vortr/wallet for autonomous signing). Vortr never signs. Use when an agent needs to price or execute a token swap on Base.
 ---
 
 # Vortr MCP — Skill Guide
 
-Vortr gives AI assistants non-custodial DeFi capabilities on Base: token search, 0x swap quotes, and ERC-5792 swap payloads. You sign every trade in your own wallet — `build_swap` returns a `sign_url` to open and confirm (default), or run the first-party `@vortr/wallet` local signer alongside the connector for autonomous execution. Vortr never signs anything.
+Vortr gives AI assistants non-custodial DeFi capabilities on Base: token search, 0x swap quotes, and ERC-5792 swap payloads. Your agent signs + sends the ERC-5792 `build_swap` returns with its own wallet, or runs the first-party `@vortr/wallet` local signer alongside the connector for autonomous execution. Vortr never signs anything.
 
 > This file is a valid skill for **both** Claude Code skills and **Hermes Agent**
 > (NousResearch) — drop it into `~/.hermes/skills/defi/vortr-swaps/`.
@@ -65,15 +65,15 @@ can't be built for a balance the wallet doesn't have.
 
 ## Installation
 
-Use the remote connector. Sign by opening the `sign_url` `build_swap` returns. No `@vortr/mcp`
-install, no API key, **no secret**.
+Use the remote connector. Your agent signs + sends the ERC-5792 payload `build_swap` returns
+with its own wallet. No `@vortr/mcp` install, no API key, **no secret**.
 
 ### Remote connector — Claude (web/desktop)
 
 Vortr is a hosted remote MCP. Add this URL as a custom connector:
 
 ```
-https://www.vortr.xyz/mcp
+https://www.vortragents.com/mcp
 ```
 
 Streamable HTTP, public, stateless — exposes `search_tokens`, `get_quote`,
@@ -82,7 +82,7 @@ Streamable HTTP, public, stateless — exposes `search_tokens`, `get_quote`,
 ### Claude Code
 
 ```bash
-claude mcp add --transport http vortr https://www.vortr.xyz/mcp
+claude mcp add --transport http vortr https://www.vortragents.com/mcp
 ```
 
 ### Hermes Agent (NousResearch)
@@ -93,20 +93,22 @@ Put it under `mcp_servers:` in `~/.hermes/config.yaml`, then `/reload-mcp`:
 ```yaml
 mcp_servers:
   vortr:
-    url: "https://www.vortr.xyz/mcp"
+    url: "https://www.vortragents.com/mcp"
 ```
 
-This is the keyless **sign_url** path (search/quote/build; you sign in your own wallet). For
-autonomous, key-in-env execution instead, use `@vortr/wallet` — see **Quick start** above.
+This is the keyless path (search/quote/build; your agent signs + sends the ERC-5792 payload
+with its own wallet). For autonomous, key-in-env execution instead, use `@vortr/wallet` — see
+**Quick start** above.
 
 ### Signing
 
-The connector never signs (non-custodial). `build_swap` returns a `sign_url` — open it to
-confirm in your own wallet. This is the default path: no keys involved in the connector at all.
+The connector never signs (non-custodial). `build_swap` returns the ERC-5792 payload — your
+agent signs + sends it with its own wallet (or run `@vortr/wallet` for autonomous signing).
+This is the default path: no keys involved in the connector at all.
 
 ### Autonomous signing with `@vortr/wallet` (local key)
 
-To let an agent execute end-to-end without a browser (no `sign_url` step), run the
+To let an agent execute end-to-end without a browser, run the
 first-party local signer **`@vortr/wallet`** alongside this connector. It holds
 your EOA key locally in `VORTR_SIGNER_KEY` (env, never in chat), auto-fills the taker,
 fetches the keyless calldata from the connector itself, and signs+broadcasts on Base
@@ -158,20 +160,20 @@ folder into `~/.hermes/skills/defi/vortr-swaps/`.
 |------|-------------|
 | `search_tokens` | Search the Base token registry by symbol, name, or address. Returns `TokenInfo[]`. |
 | `get_quote` | Get a 0x swap quote on Base (price, `minBuyAmount`, route, price impact). `amount` is base units. |
-| `build_swap` | Build an ERC-5792 `send_calls` payload (approve + swap). Returns `{ payload, summary, sign_url }`. |
+| `build_swap` | Build an ERC-5792 `send_calls` payload (approve + swap). Returns `{ payload, summary }`. |
 | `get_portfolio` | Get the Base token set for an address (portfolio scaffold; live balances hydrate in the web UI, not over MCP). |
 
 ## Full Swap Recipe
 
 1. `vortr.search_tokens(query)` — find `sellToken` and `buyToken` addresses.
 2. `vortr.get_quote(sellToken, buyToken, amount, taker)` — preview price and `minBuyAmount`.
-3. `vortr.build_swap(sellToken, buyToken, amount, taker)` — get `{ payload, summary, sign_url }`.
+3. `vortr.build_swap(sellToken, buyToken, amount, taker)` — get `{ payload, summary }`.
    - `summary.expiresAt` is an epoch ms deadline; call `build_swap` again if it has passed.
-4. Open `sign_url`, connect your wallet, and confirm. Vortr never signs.
+4. Your agent signs + sends the ERC-5792 payload with its own wallet. Vortr never signs.
 
 ### Autonomous signing (optional)
 
-Instead of opening `sign_url`, run `@vortr/wallet` alongside the connector (see
+Instead of signing the payload yourself, run `@vortr/wallet` alongside the connector (see
 [Autonomous signing with @vortr/wallet](#autonomous-signing-with-vortrawallet-local-key) above).
 The flow is `wallet_address` → `prepare_swap` → `execute_swap` → `swap_status`.
 
@@ -184,5 +186,5 @@ The flow is `wallet_address` → `prepare_swap` → `execute_swap` → `swap_sta
 ## Notes
 
 - **Amount is BASE UNITS**: 1 USDC = `"1000000"` (6 decimals); 1 ETH = `"1000000000000000000"` (18 decimals).
-- **Vortr never signs.** You confirm in your own wallet — open the `sign_url` (default), or run `@vortr/wallet` for autonomous signing.
+- **Vortr never signs.** Your agent signs + sends the ERC-5792 payload with its own wallet (or run `@vortr/wallet` for autonomous signing).
 - **Base-only**: All tokens must be on Base (chain ID 8453). Use `search_tokens` to look up valid addresses.

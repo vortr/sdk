@@ -9,7 +9,6 @@ const BUILD_BODY = {
     taker: '0x0000000000000000000000000000000000000001',
     expiresAt: 9999999999999,
   },
-  sign_url: 'https://www.vortr.xyz/swap?sell=...',
 };
 
 function okResult(body: unknown): ToolCallResult {

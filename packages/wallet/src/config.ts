@@ -19,7 +19,7 @@ export function readConfig(source: Record<string, string | undefined> = process.
     // Note: never interpolate the value — it's a secret.
     throw new Error('Missing or malformed VORTR_SIGNER_KEY (expected a 0x-prefixed 32-byte hex private key).');
   }
-  const apiBase = (source.VORTR_API_BASE ?? 'https://www.vortr.xyz/mcp').replace(/\/$/, '');
+  const apiBase = (source.VORTR_API_BASE ?? 'https://www.vortragents.com/mcp').replace(/\/$/, '');
   const site = apiBase.replace(/\/mcp$/, '');
   const rpcUrl = source.VORTR_BASE_RPC_URL ?? 'https://mainnet.base.org';
   return { signerKey: signerKey as Hex, apiBase, site, rpcUrl };
