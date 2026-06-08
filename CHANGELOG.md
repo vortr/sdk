@@ -9,6 +9,15 @@ versions are [SemVer](https://semver.org/). From `@vortr/wallet@0.1.4` /
 
 ## @vortr/wallet
 
+### 0.1.8
+- Registry expanded to **17 Base tokens** — added **EURC, wstETH, weETH, MORPHO,
+  VIRTUAL, BRETT, DEGEN, cbADA** (each CoinGecko-canonical with on-chain
+  `symbol()`/`decimals()` + DefiLlama price confirmed).
+- Added **registry-integrity tests** (EIP-55 checksum, no duplicate address/symbol,
+  sane decimals) that fail the build before a malformed token can ship.
+- Added runnable [`examples/`](examples/): keyless `quote.mjs` (zero-dep) and
+  `wallet.mjs` (the local-signer flow).
+
 ### 0.1.7
 - Added Base tokens to the registry: **cbETH**, **USDe**, **AERO** (CoinGecko
   canonical address + on-chain symbol/decimals verified). 9 tokens total.
@@ -45,6 +54,11 @@ versions are [SemVer](https://semver.org/). From `@vortr/wallet@0.1.4` /
   locally, per-swap confirm. The hosted Vortr never holds the key.
 
 ## @vortr/mcp
+
+### 0.1.7
+- Registry expanded to **17 Base tokens** — added **EURC, wstETH, weETH, MORPHO,
+  VIRTUAL, BRETT, DEGEN, cbADA** (CoinGecko-canonical + on-chain symbol/decimals +
+  DefiLlama price verified).
 
 ### 0.1.6
 - Added Base tokens: **cbETH**, **USDe**, **AERO** (CoinGecko + on-chain verified).

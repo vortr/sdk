@@ -9,6 +9,15 @@ Open-source packages behind [Vortr](https://vortr.xyz) — non-custodial DeFi sw
 on **Base** for AI agents and developers. Vortr never holds your keys. Published
 to npm with [provenance](https://docs.npmjs.com/generating-provenance-statements).
 
+## Try it (no install, no key)
+
+```bash
+node examples/quote.mjs WETH USDC 0.05    # live 0x quote + approve/swap calldata + a sign_url
+```
+
+A keyless live quote straight from the hosted connector — see [`examples/`](examples/)
+for the script and the `@vortr/wallet` autonomous-signing example.
+
 ## Packages
 
 | Package | npm | What it is |
@@ -35,6 +44,34 @@ summary → on your **"yes"** → `execute_swap`. See
 
 For the keyless / browser-signing path, use `@vortr/mcp` or the hosted connector at
 `https://www.vortr.xyz/mcp`.
+
+## Tools
+
+`@vortr/mcp` (keyless connector) + the hosted MCP expose four read/build tools; Vortr never signs:
+
+| Tool | What it does |
+|------|--------------|
+| `search_tokens` | Resolve a symbol / name / address to a Base token (`TokenInfo[]`). |
+| `get_quote` | Live 0x quote — `buyAmount`, `minBuyAmount`, route, price impact. `amount` is BASE UNITS. |
+| `build_swap` | ERC-5792 `wallet_sendCalls` payload (approve + swap) + a `sign_url`. |
+| `get_portfolio` | The Base token set for an address. |
+
+`@vortr/wallet` (local signer) adds the autonomous flow on top:
+
+| Tool | What it does |
+|------|--------------|
+| `wallet_address` | The local signer's EOA address — use as the taker. |
+| `prepare_swap` | Quote + stage a swap → `{ confirm_token, summary }` (`summary.buy` = expected, `summary.buyMin` = floor). |
+| `execute_swap` | Sign + broadcast a prepared swap on Base (per-swap confirm). |
+| `swap_status` | Poll a broadcast transaction hash. |
+
+## Supported Base tokens
+
+17 verified assets — every entry is CoinGecko-canonical with its on-chain `symbol()`/`decimals()` confirmed:
+
+> ETH · WETH · USDC · USDT · DAI · USDe · EURC · cbBTC · cbETH · wstETH · weETH · AERO · MORPHO · VIRTUAL · BRETT · DEGEN · cbADA
+
+`search_tokens` resolves any of them by symbol, name, or address; the set grows as Base liquidity warrants.
 
 ## Security
 

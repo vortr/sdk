@@ -159,7 +159,7 @@ folder into `~/.hermes/skills/defi/vortr-swaps/`.
 | `search_tokens` | Search the Base token registry by symbol, name, or address. Returns `TokenInfo[]`. |
 | `get_quote` | Get a 0x swap quote on Base (price, `minBuyAmount`, route, price impact). `amount` is base units. |
 | `build_swap` | Build an ERC-5792 `send_calls` payload (approve + swap). Returns `{ payload, summary, sign_url }`. |
-| `get_portfolio` | Get token balances for an address on Base. |
+| `get_portfolio` | Get the Base token set for an address (portfolio scaffold; live balances hydrate in the web UI, not over MCP). |
 
 ## Full Swap Recipe
 

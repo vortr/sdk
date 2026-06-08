@@ -1,4 +1,4 @@
-export const DEFAULT_SLIPPAGE_BPS = 25; // 0.25% — Vortr's universe is 6 deep-liquidity Base blue-chips, so a tight floor rarely reverts
+export const DEFAULT_SLIPPAGE_BPS = 25; // 0.25% — Vortr's universe is mostly deep-liquidity Base tokens; the floor is overridable per-swap
 export const MAX_PRICE_IMPACT_BPS = 1500; // 15% hard ceiling, fail-closed
 
 /** Compute a minimum-out floor from a buyAmount and slippage bps. Consumer-facing helper for web/MCP layers; `buildSwapCalls` deliberately trusts 0x's own `minBuyAmount` instead. */

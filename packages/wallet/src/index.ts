@@ -5,7 +5,7 @@ import { privateKeyToAccount } from 'viem/accounts';
 import { readConfig } from './config.js';
 import { createServer } from './server.js';
 
-const VERSION = '0.1.7';
+const VERSION = '0.1.8';
 
 const ART = [
   '  ██╗   ██╗ ██████╗ ██████╗ ████████╗██████╗',

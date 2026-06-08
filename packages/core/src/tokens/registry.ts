@@ -13,6 +13,16 @@ export const BASE_TOKENS: TokenInfo[] = [
   { chainId: BASE_CHAIN_ID, address: '0x2Ae3F1Ec7F1F5012CFEab0185bfc7aa3cf0DEc22', symbol: 'cbETH', name: 'Coinbase Wrapped Staked ETH', decimals: 18 },
   { chainId: BASE_CHAIN_ID, address: '0x5d3a1Ff2b6BAb83b63cd9AD0787074081a52ef34', symbol: 'USDe', name: 'Ethena USDe', decimals: 18 },
   { chainId: BASE_CHAIN_ID, address: '0x940181a94A35A4569E4529A3CDfB74e38FD98631', symbol: 'AERO', name: 'Aerodrome', decimals: 18 },
+  // Verified 2026-06-08 — CoinGecko canonical Base address + on-chain symbol()/decimals()
+  // (RPC eth_call) + DefiLlama price (conf 0.99) all confirmed. Deep-liquidity Base assets.
+  { chainId: BASE_CHAIN_ID, address: '0x60a3E35Cc302bFA44Cb288Bc5a4F316Fdb1adb42', symbol: 'EURC', name: 'Euro Coin', decimals: 6 },
+  { chainId: BASE_CHAIN_ID, address: '0xc1CBa3fCea344f92D9239c08C0568f6F2F0ee452', symbol: 'wstETH', name: 'Wrapped liquid staked Ether', decimals: 18 },
+  { chainId: BASE_CHAIN_ID, address: '0x04C0599Ae5A44757c0af6F9eC3b93da8976c150A', symbol: 'weETH', name: 'Wrapped eETH', decimals: 18 },
+  { chainId: BASE_CHAIN_ID, address: '0xBAa5CC21fd487B8Fcc2F632f3F4E8D37262a0842', symbol: 'MORPHO', name: 'Morpho', decimals: 18 },
+  { chainId: BASE_CHAIN_ID, address: '0x0b3e328455c4059EEb9e3f84b5543F74E24e7E1b', symbol: 'VIRTUAL', name: 'Virtuals Protocol', decimals: 18 },
+  { chainId: BASE_CHAIN_ID, address: '0x532f27101965dd16442E59d40670FaF5eBB142E4', symbol: 'BRETT', name: 'Brett', decimals: 18 },
+  { chainId: BASE_CHAIN_ID, address: '0x4ed4E862860beD51a9570b96d89aF5E1B0Efefed', symbol: 'DEGEN', name: 'Degen', decimals: 18 },
+  { chainId: BASE_CHAIN_ID, address: '0xcbADA732173e39521CDBE8bf59a6Dc85A9fc7b8c', symbol: 'cbADA', name: 'Coinbase Wrapped ADA', decimals: 6 },
 ];
 
 const BY_ADDRESS = new Map<string, TokenInfo>(

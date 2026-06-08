@@ -7,7 +7,7 @@ import { searchTokensSchema, quoteSchema, portfolioSchema, READ_ONLY, PREPARE } 
 export function createServer(): McpServer {
   const config = readConfig();
   const deps: ToolDeps = { client: new ApiClient(config) };
-  const server = new McpServer({ name: 'vortr', version: '0.1.6' });
+  const server = new McpServer({ name: 'vortr', version: '0.1.7' });
 
   server.registerTool('search_tokens',
     { description: 'Search Vortr Base token registry by symbol, name, or address.', inputSchema: searchTokensSchema, annotations: READ_ONLY },
@@ -22,7 +22,7 @@ export function createServer(): McpServer {
     (args) => buildSwapHandler(args, deps));
 
   server.registerTool('get_portfolio',
-    { description: 'Get token balances for an address on Base.', inputSchema: portfolioSchema, annotations: READ_ONLY },
+    { description: 'Get the Base token set for an address (portfolio scaffold; live balances hydrate in the Vortr web UI, not over MCP).', inputSchema: portfolioSchema, annotations: READ_ONLY },
     (args) => getPortfolioHandler(args, deps));
 
   return server;
