@@ -2,6 +2,11 @@ import { getAddress, isAddress, type Address } from 'viem';
 import { BASE_CHAIN_ID } from '../chains.js';
 import { NATIVE_TOKEN_ADDRESS, type TokenInfo } from '../types.js';
 
+// To ADD a token, vet the candidate first:
+//   pnpm --filter @vortr/core verify-tokens 0xCandidateAddress
+// CoinGecko seeds the canonical Base address; the script then corroborates it
+// against the Uniswap Base token list AND reads on-chain symbol()/decimals().
+// Run with no arg to re-audit the whole registry. See scripts/verify-tokens.mjs.
 export const BASE_TOKENS: TokenInfo[] = [
   { chainId: BASE_CHAIN_ID, address: NATIVE_TOKEN_ADDRESS, symbol: 'ETH', name: 'Ether', decimals: 18 },
   { chainId: BASE_CHAIN_ID, address: '0x4200000000000000000000000000000000000006', symbol: 'WETH', name: 'Wrapped Ether', decimals: 18 },
