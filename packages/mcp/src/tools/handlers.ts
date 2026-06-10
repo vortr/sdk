@@ -16,11 +16,23 @@ function assertBaseTokens(sellToken: string, buyToken: string): void {
   }
 }
 
+/** Reject a malformed `amount` (decimal/negative/empty) before it round-trips to
+ *  the API as an opaque 400 — the most common LLM mistake is "1.5" for base units. */
+function assertBaseUnits(amount: string): void {
+  if (!/^\d+$/.test(amount.trim()) || BigInt(amount.trim()) <= 0n) {
+    throw new Error(
+      `amount "${amount}" must be in base units — a whole integer string like "1000000" (= 1 USDC), ` +
+        `not a decimal such as "1.5". Multiply by 10^decimals for the token.`,
+    );
+  }
+}
+
 export async function getQuoteHandler(
   args: { sellToken: string; buyToken: string; amount: string; taker: string; slippageBps?: number },
   deps: ToolDeps,
 ): Promise<Content> {
   assertBaseTokens(args.sellToken, args.buyToken);
+  assertBaseUnits(args.amount);
   const quote = await deps.client.postQuote({
     chainId: 8453, sellToken: args.sellToken, buyToken: args.buyToken,
     sellAmount: args.amount, taker: args.taker, slippageBps: args.slippageBps ?? DEFAULT_SLIPPAGE_BPS,
@@ -41,6 +53,7 @@ export async function buildSwapHandler(
   deps: ToolDeps,
 ): Promise<Content> {
   assertBaseTokens(args.sellToken, args.buyToken);
+  assertBaseUnits(args.amount);
   const result = await deps.client.postBuildSwap({
     chainId: 8453, sellToken: args.sellToken, buyToken: args.buyToken,
     sellAmount: args.amount, taker: args.taker, slippageBps: args.slippageBps ?? DEFAULT_SLIPPAGE_BPS,

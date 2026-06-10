@@ -62,23 +62,63 @@ async function fetchUniswapBase() {
   return { byAddr, bySym, count: byAddr.size };
 }
 
-async function ethCall(to, data) {
-  const res = await fetch(RPC, {
-    method: 'POST',
-    headers: { 'content-type': 'application/json' },
-    body: JSON.stringify({ jsonrpc: '2.0', id: 1, method: 'eth_call', params: [{ to, data }, 'latest'] }),
-  });
-  const { result, error } = await res.json();
-  if (error) throw new Error(error.message);
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+const backoff = (attempt) => 600 * 2 ** attempt + Math.floor(Math.random() * 200);
+const MAX_RETRIES = 5;
+const MIN_GAP_MS = 160; // ~6 calls/sec — under the public RPC's burst limit
+
+// Serialize EVERY RPC call through one gate with a minimum gap, so even the
+// Promise.all in onchain() can't burst the limiter (the original bug: bursts
+// tripped mainnet.base.org and failed ~14/17 tokens). One call in flight at a time.
+let _gate = Promise.resolve();
+function gated(fn) {
+  const result = _gate.then(fn, fn);
+  _gate = result.then(() => sleep(MIN_GAP_MS), () => sleep(MIN_GAP_MS));
   return result;
 }
+
+// The default mainnet.base.org returns HTTP 200 with a JSON-RPC {error:"over rate
+// limit"} under load (it doesn't always use a 429), so retry both shapes — plus
+// 429/5xx and network resets — with exponential backoff before giving up.
+async function rpcCall(to, data) {
+  const body = JSON.stringify({ jsonrpc: '2.0', id: 1, method: 'eth_call', params: [{ to, data }, 'latest'] });
+  for (let attempt = 0; ; attempt++) {
+    let res;
+    try {
+      res = await fetch(RPC, { method: 'POST', headers: { 'content-type': 'application/json' }, body });
+    } catch (e) {
+      if (attempt < MAX_RETRIES) { await sleep(backoff(attempt)); continue; }
+      throw new Error(`network: ${e.message}`);
+    }
+    if (!res.ok) {
+      if ((res.status === 429 || res.status === 408 || res.status >= 500) && attempt < MAX_RETRIES) {
+        await sleep(backoff(attempt));
+        continue;
+      }
+      const text = (await res.text().catch(() => '')).replace(/\s+/g, ' ').trim().slice(0, 120);
+      throw new Error(`rpc ${res.status}${res.status === 429 ? ' (rate limited)' : ''}${text ? `: ${text}` : ''}`);
+    }
+    const { result, error } = await res.json();
+    if (error) {
+      if (/rate limit|too many|capacity|try again/i.test(error.message || '') && attempt < MAX_RETRIES) {
+        await sleep(backoff(attempt));
+        continue;
+      }
+      throw new Error(error.message);
+    }
+    return result;
+  }
+}
+
+const ethCall = (to, data) => gated(() => rpcCall(to, data));
 
 /** Decode an ABI-encoded string return, with a bytes32 fallback for legacy tokens. */
 function decodeString(hex) {
   const h = (hex || '').replace(/^0x/, '');
   if (h.length < 128) return Buffer.from(h, 'hex').toString('utf8').replace(/\0+$/g, '').trim();
   const len = parseInt(h.slice(64, 128), 16);
-  return Buffer.from(h.slice(128, 128 + len * 2), 'hex').toString('utf8').replace(/\0+$/g, '').trim();
+  const end = Math.min(128 + len * 2, h.length); // clamp — never slice past a truncated/garbled response
+  return Buffer.from(h.slice(128, end), 'hex').toString('utf8').replace(/\0+$/g, '').trim();
 }
 
 async function onchain(address) {
@@ -148,7 +188,7 @@ async function main() {
   }
 
   const rows = [];
-  for (const t of tokens) rows.push(await verify(t, uni));
+  for (const t of tokens) rows.push(await verify(t, uni)); // RPC calls are gated/spaced in ethCall
 
   const pad = (s, n) => s + ' '.repeat(Math.max(0, n - s.length));
   console.log(pad('SYMBOL', 9) + pad('UNISWAP', 42) + 'ON-CHAIN');

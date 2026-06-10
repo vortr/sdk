@@ -24,6 +24,11 @@ describe('getQuoteHandler', () => {
     const out = await getQuoteHandler({ sellToken: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913', buyToken: '0x4200000000000000000000000000000000000006', amount: '1000000', taker: '0x1111111111111111111111111111111111111111' }, { client: fakeClient });
     expect(JSON.stringify(out)).toMatch(/minBuyAmount/);
   });
+  it('rejects a non-base-units amount (decimal) before calling the API', async () => {
+    await expect(
+      getQuoteHandler({ sellToken: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913', buyToken: '0x4200000000000000000000000000000000000006', amount: '1.5', taker: '0x1111111111111111111111111111111111111111' }, { client: fakeClient }),
+    ).rejects.toThrow(/base units/i);
+  });
 });
 
 describe('buildSwapHandler', () => {
@@ -32,6 +37,11 @@ describe('buildSwapHandler', () => {
     const text = JSON.stringify(out);
     expect(text).toMatch(/@vortr\/wallet/);
     expect(text).toMatch(/expiresAt/);
+  });
+  it('rejects a non-base-units amount before building (no API call)', async () => {
+    await expect(
+      buildSwapHandler({ sellToken: '0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913', buyToken: '0x4200000000000000000000000000000000000006', amount: '1.5', taker: '0x1111111111111111111111111111111111111111' }, { client: fakeClient }),
+    ).rejects.toThrow(/base units/i);
   });
 });
 

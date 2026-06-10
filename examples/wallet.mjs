@@ -57,7 +57,7 @@ try {
 
   // Quote $1 of ETH -> USDC. summary has both `buy` (expected) and `buyMin` (floor).
   const { confirm_token, summary } = await call('prepare_swap', { sellToken: 'ETH', buyToken: 'USDC', usd: 1 });
-  console.log(`prepare_swap: ≈ ${summary?.buy?.amount ?? '?'} ${summary?.buy?.token ?? ''} (min ${summary?.buyMin ?? '?'})`);
+  console.log(`prepare_swap: ≈ ${summary?.buy?.amount ?? '?'} ${summary?.buy?.token ?? ''} (min ${summary?.buyMin?.amount ?? '?'})`);
 
   if (!execute) {
     console.log(`\nDry run — pass --execute to broadcast on Base.\n`);

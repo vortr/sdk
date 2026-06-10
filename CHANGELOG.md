@@ -9,6 +9,20 @@ versions are [SemVer](https://semver.org/). From `@vortr/wallet@0.1.4` /
 
 ## @vortr/wallet
 
+### 0.1.11
+- `prepare_swap` / `get_quote` now **validate the `amount`** as positive base units
+  and reject a decimal (`"1.5"`), negative, zero, or empty value with a clear
+  error — before building. Previously a decimal threw inside the best-effort
+  balance preflight (silently skipping it) and a negative amount slipped past the
+  balance check straight into the built transaction.
+
+### 0.1.10
+- Internal: the boot banner + MCP `serverInfo` now read the version from
+  `package.json`, so the displayed version can't drift from the published one.
+
+### 0.1.9
+- Homepage + docs moved to **vortragents.com**. No API or runtime change.
+
 ### 0.1.8
 - Registry expanded to **17 Base tokens** — added **EURC, wstETH, weETH, MORPHO,
   VIRTUAL, BRETT, DEGEN, cbADA** (each CoinGecko-canonical with on-chain
@@ -54,6 +68,20 @@ versions are [SemVer](https://semver.org/). From `@vortr/wallet@0.1.4` /
   locally, per-swap confirm. The hosted Vortr never holds the key.
 
 ## @vortr/mcp
+
+### 0.1.10
+- `get_quote` / `build_swap` now **validate inputs at the tool edge**: `amount`
+  must be base units (rejects `"1.5"`) and token/taker args must be `0x`
+  addresses. The agent gets an actionable error instead of an opaque API `400`.
+
+### 0.1.9
+- Internal: the boot banner + `serverInfo` read the version from `package.json`
+  (no more version drift).
+
+### 0.1.8
+- Migrated to **vortragents.com** and removed the legacy `sign_url` path: agents
+  sign the returned ERC-5792 approve+swap payload in their own wallet, or run the
+  `@vortr/wallet` local signer for autonomous execution.
 
 ### 0.1.7
 - Registry expanded to **17 Base tokens** — added **EURC, wstETH, weETH, MORPHO,
